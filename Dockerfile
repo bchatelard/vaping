@@ -101,10 +101,9 @@ ARG vaping_home=/vaping
 ENV VAPING_HOME=$vaping_home
 
 WORKDIR /vaping
-RUN chown vaping:vaping /vaping
 
-COPY --chown=vaping:vaping examples examples
-COPY --chown=vaping:vaping examples/standalone_dns/config.yml .
+COPY examples examples
+COPY examples/standalone_dns/config.yml .
 
 EXPOSE 7021
 
