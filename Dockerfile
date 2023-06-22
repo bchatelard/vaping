@@ -67,16 +67,12 @@ RUN pip install "$(ls dist/vaping-*.whl)[all]"
 FROM base as final
 
 ARG runtime_packages
-ARG vaping_uid=1000
 
 RUN apk upgrade --available \
     && apk --update --no-cache add $runtime_packages \
     && rm -rf /var/cache/apk/*
 
 COPY --from=builder "$VIRTUAL_ENV" "$VIRTUAL_ENV"
-
-RUN adduser -Du $vaping_uid vaping
-
 
 # test against final image
 FROM final as tester
@@ -107,7 +103,6 @@ ENV VAPING_HOME=$vaping_home
 WORKDIR /vaping
 RUN chown vaping:vaping /vaping
 
-USER vaping
 COPY --chown=vaping:vaping examples examples
 COPY --chown=vaping:vaping examples/standalone_dns/config.yml .
 
